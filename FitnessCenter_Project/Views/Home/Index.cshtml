@@ -1,0 +1,70 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        .ad {
+        margin-bottom:0rem;
+        background-color:#fffbee;
+        margin-left:auto;
+        margin-right:auto;
+        }
+    </style>
+    }
+<div class="container">
+    <div class="row">
+        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img class="d-block w-100" src="~/Image/stock-photo-a-strong-athletic-woman-sprinter-running-on-black-background-wearing-in-the-sportswear-fitness-748655305.jpg" />
+                    
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="~/Image/stock-photo-athlete-woman-in-running-start-pose-on-the-city-street-sport-tight-clothes-bright-sunset-blurry-593935445.jpg" />
+                    
+                </div>
+                <div class="carousel-item">
+                    <img class="d-block w-100" src="~/Image/stock-photo-sport-backgrounds-sprinter-on-the-start-line-of-the-track-befor-the-dramatic-sky-603198743.jpg" />
+                    
+                </div>
+            </div>
+            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
+        </div>
+    </div>
+    <div class="row ad">
+        <div class="jumbotron ad">
+            <h2 class="display-4 text-primary">Fitness Center Propose</h2>
+            <p class="lead">Animal Flow｜美國動物流地力訓練證照研習</p>
+            <hr class="my-4">
+            <p>研習日期：2019.3.2-3 </p>
+            <p>
+                研習地點：高雄-心運動體能訓練中心
+            </p>
+            <p>
+                講師： Alisha Smith 澳洲動物流簽約國際講師
+            </p>
+            <p><strong>適合族群：體適能教練/ 團體課程老師/ 靜態課程老師/ 喜愛身體重量與自主訓練的所有人</strong></p>
+            <p class="lead">
+                <a class="btn btn-primary btn-lg" href="#" role="button">課程報名</a>
+            </p>
+        </div>
+
+
+    </div>
+</div>
+

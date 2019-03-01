@@ -1,0 +1,170 @@
+﻿@model FitnessCenterModel.ViewModel.ReserveInterviewModel
+
+@{
+    ViewBag.Title = "ReserveInterveiw";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+<link href="~/Content/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+    <style>
+        .container {
+        min-height:800px;
+        
+        }
+    </style>
+}
+<div class="container">
+    <form action="@Url.Action("ReserveInterveiw","Reserve")" method="post" id="form1">
+        @Html.HiddenFor(c=>c.Para.CoachId)
+        @Html.HiddenFor(c => c.Para.MemberId)
+        @Html.HiddenFor(c => c.Para.StatusId,new { Value=1})
+        <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+            <p id="errorMsg"></p>
+            <button type="button" class="close" aria-label="Close" onclick="closeAlert()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <h2>預約面談</h2>
+                <hr />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3">
+                <label>自由教練</label>
+            </div>
+            <div class="col-sm-6">
+                
+                <label>@Model.CoachName</label>
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3">
+                <label>目前狀態</label>
+            </div>
+            <div class="col-sm-6">
+                <div class="progress">
+                    <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">填單</div>
+                </div>
+               
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3">
+                <label>面談時間</label>
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(c=>c.Para.ReserveDate,new { @class= "form-control" })
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3">
+                <label>地點</label>
+            </div>
+            <div class="col-sm-6">
+                @Html.TextBoxFor(c=>c.Para.Location,new { @class= "form-control", placeholder = "可以約個雙方都方便的地點唷!" })
+               
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3">
+                <label>給教練訊息</label>
+            </div>
+            <div class="col-sm-6">
+                @Html.TextAreaFor(c=>c.Para.Message,new {@class="form-control", rows = "5", placeholder = "可以說說你的訓練目標、想要怎樣的體態、過往的運動習慣或飲食習慣" })
+              
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-3">
+                <label>重點提醒</label>
+            </div>
+            <div class="col-sm-6">
+                <ul>
+                    <li>如果有量過inbody可以提供給教練參考</li>
+                    <li>是否有上課經驗?預算如何</li>
+                    <li>身體狀況是否有心血管疾病、舊傷、或家族病史</li>
+                    <li>一周可運動天數</li>
+                </ul>
+
+
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="Reserve()">送出</button>
+            </div>
+
+        </div>
+</form>
+
+
+</div>
+
+
+
+
+@section scripts{
+<script src="~/Scripts/jquery-ui-timepicker-addon.js"></script>
+<script src="~/Scripts/jquery-ui-sliderAccess.js"></script>
+    <script>
+
+        $("#Para_ReserveDate").datetimepicker({
+            dateFormat: 'yy/mm/dd',
+            timeFormat: 'HH:mm:ss',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-0:+2"
+        });
+
+        function Reserve()
+        {
+            var formdata = new FormData($('#form1').get(0));
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("ReserveInterveiw", "Reserve")",
+                processData: false,
+                contentType: false,
+                data:formdata,
+               success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
+
+                    alert('預約成功');
+                    window.location.href = "@Html.Raw(Url.Action("CoachDetail", "CoachSearch", new { MemberId = Model.Para.CoachId }))";
+                }
+                else
+                {
+                    //alert('註冊失敗' + data.ex);
+                    $('#errorMsg').text(data.ex);
+                    $('#error').show();
+                }
+            },
+            error: function (ex) {
+                
+                alert(ex.Message);
+
+            }
+
+        });
+
+        }
+        function closeAlert() {
+            $('#error').hide();
+        }
+        $(function () {
+            $('#error').hide();
+        });
+    </script>
+
+
+
+    }
+

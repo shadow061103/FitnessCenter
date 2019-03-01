@@ -1,0 +1,222 @@
+﻿@model FitnessCenterModel.ViewModel.OrderListModel
+
+@{
+    ViewBag.Title = "OrderList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <style>
+        .project-tab {
+            padding: 10%;
+            margin-top: -8%;
+        }
+
+            .project-tab #tabs {
+                background: #007b5e;
+                color: #eee;
+            }
+
+                .project-tab #tabs h6.section-title {
+                    color: #eee;
+                }
+
+                .project-tab #tabs .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+                    color: #0062cc;
+                    background-color: transparent;
+                    border-color: transparent transparent #f3f3f3;
+                    border-bottom: 3px solid !important;
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+            .project-tab .nav-link {
+                border: 1px solid transparent;
+                border-top-left-radius: .25rem;
+                border-top-right-radius: .25rem;
+                color: #0062cc;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+                .project-tab .nav-link:hover {
+                    border: none;
+                }
+
+            .project-tab thead {
+                background: #f3f3f3;
+                color: #333;
+            }
+
+            .project-tab a {
+                text-decoration: none;
+                color: #333;
+                font-weight: 600;
+            }
+        .container {
+        
+       min-height:800px;
+        }
+    </style>
+
+}
+<div class="container">
+    <section id="tabs" class="project-tab">
+
+        <div class="row">
+            <div class="col-md-12">
+                <nav>
+                    <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="interview-tab" data-toggle="tab" href="#interview" role="tab" aria-controls="interview" aria-selected="true">面談</a>
+                        <a class="nav-item nav-link" id="service-tab" data-toggle="tab" href="#service" role="tab" aria-controls="service" aria-selected="false">服務</a>
+
+                    </div>
+                </nav>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="interview" role="tabpanel" aria-labelledby="interview-tab">
+                        @if (Model.inserview.Count > 0)
+                        {
+                            <table class="table table-hover" cellspacing="0">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        @if ((int)Model.State == 1)
+                                        {
+                                            <th>學員名字</th>
+                                            <th>性別</th>
+                                            <th>年紀</th>
+                                        }
+                                        else
+                                        {
+                                            <th>教練名字</th>
+                                            <th>Line ID</th>
+                                        }
+
+
+                                        <th>狀態</th>
+                                        <th>預約日期</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var interview in Model.inserview)
+                                    {
+                                        <tr>
+                                            
+                                            @if ((int)Model.State == 1)
+                                            {
+                                                <td><a href="@Url.Action("CoachInterViewDetail","Reserve",new { OrderId=interview.OrderId})">檢視</a></td>
+                                                <td>@interview.MemberName</td>
+                                                <td>@Html.Raw(interview.MemberGenger == 0 ? "男" : "女")</td>
+                                                <td>@interview.MemberAge</td>
+                                            }
+                                            else
+                                            {
+                                                <td><a href="@Url.Action("MemberInterViewDetail","Reserve",new { OrderId=interview.OrderId})">檢視</a></td>
+                                                <td>@interview.CoachName</td>
+                                                <td>@interview.LineID</td>
+                                            }
+
+
+                                            <td>@interview.Status</td>
+                                            <td>@interview.ReserveDate</td>
+                                        </tr>
+
+                                    }
+
+
+                                </tbody>
+                            </table>
+
+                        }
+                        else
+                        {
+                            <label>目前無預約!</label>
+                        }
+
+
+                    </div>
+                    <div class="tab-pane fade" id="service" role="tabpanel" aria-labelledby="service-tab">
+                       @if (Model.service.Count > 0)
+                       {
+                        <table class="table" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    @if ((int)Model.State == 1)
+                                    {
+                                        <th>學員名字</th>
+                                            <th>性別</th>
+                                            <th>年紀</th>
+                                    }
+                                    else
+                                    {
+                                        <th>教練名字</th>
+                                        <th>Line ID</th>
+                                    }
+
+
+                                    <th>狀態</th>
+                                    <th>預約日期</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var service in Model.service)
+                                {
+                                    <tr>
+
+                                        @if ((int)Model.State == 1)
+                                        {
+                                            <td><a href="@Url.Action("CoachServiceDatail","Reserve",new { OrderId=service.OrderId})">檢視</a></td>
+                                                <td>@service.MemberName</td>
+                                                <td>@Html.Raw(service.MemberGenger == 0 ? "男" : "女")</td>
+                                                <td>@service.MemberAge</td>
+                                        }
+                                        else
+                                        {
+                                            <td><a href="@Url.Action("MemberServiceDetail","Reserve",new { OrderId=service.OrderId})">檢視</a></td>
+                                                <td>@service.CoachName</td>
+                                                <td>@service.LineID</td>
+                                        }
+
+
+                                        <td>@service.Status</td>
+                                        <td>@service.ServiceDate</td>
+                                    </tr>
+
+                                }
+                                
+                                
+                            </tbody>
+                        </table>
+
+                       }
+                       else
+                       {
+                        <label>目前無預約!</label>
+                       }
+                         
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+</div>
+
+
+
+
+
+
+
+
+@section scripts{
+    <script>
+
+
+
+    </script>
+
+
+
+}

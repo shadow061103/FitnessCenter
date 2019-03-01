@@ -1,0 +1,149 @@
+﻿@model FitnessCenterModel.ViewModel.CoachListViewModel
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+
+        #top {
+            background-image: url('../../Image/Fitnessgirl.jpg');
+           background-repeat: no-repeat;
+            height: 700px;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .container {
+        max-width:100%;
+        background-color:#E0FFFF;
+        }
+        .box {
+        position:absolute;
+        top:50%;
+        left:50%;
+        margin: -150px 0 0 -600px;
+        width: 1200px;
+        height: 300px;
+        }
+    </style>
+}
+<div class="container ">
+    
+    <div id="top">
+        <div class="box">
+            <form action="@Url.Action("CoachList", "CoachSearch")" method="post">
+
+                <div class="row form-group">
+                    <div class="offset-sm-3 col-sm-6">
+                        <select class="form-control" id="searchPara_TrainingProgramId" name="searchPara.TrainingProgramId">
+                            <option value="0" selected>請選擇訓練項目</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="offset-sm-3 col-sm-6">
+                        <select class="form-control" id="searchPara_CourseId" name="searchPara.CourseId">
+                            <option value="0" selected>請選擇課程形式</option>
+                        </select>
+
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="offset-sm-3 col-sm-6">
+                        <select class="form-control" id="searchPara_Area" name="searchPara.Area" >
+                            <option value="" selected>請選擇上課地區</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="offset-sm-3 col-sm-6">
+                        <button type="submit" class="btn btn-primary btn-lg btn-block">主動搜尋教練</button>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+       
+    </div>
+        
+ 
+    
+</div>
+@section scripts{
+    <script type="text/javascript">
+
+        $(function () {
+            GetCountry();
+            GetProgram();
+            GetCourse();
+        });
+
+        function GetCountry() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetCountryList", "base")",
+                contentType: "application/json;charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (index, value) {
+                    $('#searchPara_Area').append($("<option></option>").attr("value", value).text(value));
+                    
+                });
+               
+            },
+            error: function (ex) {
+
+            }
+
+        });
+        }
+        function GetProgram() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetTrainingProgramList", "base")",
+                contentType: "application/json;charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (index, item) {
+
+                    $('#searchPara_TrainingProgramId').append($("<option></option>").attr("value", item.ID).text(item.TrainingProgram));
+                });
+                
+
+
+            },
+            error: function (ex) {
+
+            }
+
+        });
+        }
+        function GetCourse() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetCourseList", "base")",
+                contentType: "application/json;charset=utf-8",
+            datatype: "json",
+            success: function (data) {
+
+                $.each(data, function (index, item) {
+
+                    $('#searchPara_CourseId').append($("<option></option>").attr("value", item.ID).text(item.Course));
+                });
+               
+            },
+            error: function (ex) {
+
+            }
+
+        });
+        }
+    </script>
+    
+    }
+

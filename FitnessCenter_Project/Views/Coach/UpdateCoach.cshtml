@@ -1,0 +1,501 @@
+﻿@model FitnessCenterModel.ViewModel.UpdateCoachViewModel
+
+@{
+    ViewBag.Title = "UpdateCoach";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css{
+    <link href="~/Content/imageupload.css" rel="stylesheet" />
+    <style>
+        .addlicense, .addcompetition, .addexp {
+            text-align: center;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .delete {
+            color: white;
+            background-color: rgb(231, 76, 60);
+            text-align: center;
+            margin-top: 6px;
+            font-weight: 700;
+            border-radius: 5px;
+            min-width: 20px;
+            cursor: pointer;
+        }
+
+        #singlebutton {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 40px;
+            margin-bottom: 40px;
+        }
+
+        .license, .experience, .competiton {
+            margin-bottom: 0px;
+        }
+    </style>
+}
+<div class="container">
+    <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <p id="errorMsg"></p>
+        <button type="button" class="close" aria-label="Close" onclick="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="@Url.Action("RegisterMember","Member")" id="form1" method="post" enctype="multipart/form-data">
+        @Html.HiddenFor(c=>c.UpdateModel.User.MemberId)
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <h2>教練資料修改</h2>
+                <hr />
+            </div>
+        </div>
+        <div style="display:none">
+            <!--hidden不能存list 改隱藏起來-->
+            @Html.EditorFor(c => c.UpdateModel.OriginArea)
+            @Html.EditorFor(c => c.UpdateModel.OriginCourse)
+            @Html.EditorFor(c => c.UpdateModel.OriginTrainProgram)
+            @Html.EditorFor(c => c.UpdateModel.OriginCompetition)
+            @Html.EditorFor(c => c.UpdateModel.OriginExperience)
+            @Html.EditorFor(c => c.UpdateModel.OriginLicense)
+        </div>
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="imageUpload" name="Image" accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload">
+                            <img src="~/Image/edit.png" />
+                        </label>
+                    </div>
+                    <div class="avatar-preview">
+
+                        @{
+                            string imagePath = Model.UpdateModel.User.Image + ".jpg";
+
+                        }
+                        <div id="imagePreview" style="background-image: url(/CoachImage/@imagePath);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>Email</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Email, new { @class = "form-control", @readonly = "readonly" })
+
+            </div>
+        </div>
+       
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-3">
+                <label>姓名</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Name, new { @class = "form-control" })
+
+            </div>
+            <div class="col-sm-3">
+                <label>暱稱</label>
+
+                @Html.TextBoxFor(c => c.UpdateModel.User.NickName, new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row form-grop">
+            <div class="offset-sm-3 col-sm-6">
+                <label>性別</label>
+                <div class="form-check form-check-inline">
+
+                    @Html.RadioButtonFor(c => c.UpdateModel.User.Gender, "0", new { @class = "form-check-input" })
+                    <label class="form-check-label" for="Gender">
+                        男
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+
+                    @Html.RadioButtonFor(c => c.UpdateModel.User.Gender, "1", new { @class = "form-check-input" })
+                    <label class="form-check-label" for="Gender">
+                        女
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-3">
+                <label>手機</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Phone, new { @class = "form-control" })
+
+            </div>
+            <div class="col-sm-3">
+                <label>生日</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Birthday, "{0:yyyy/MM/dd}", new { @class = "form-control" })
+
+            </div>
+        </div>
+
+        <div class="row form-group">
+
+
+            <div class="offset-sm-3 col-sm-6">
+                <label class="form-label">地址</label>
+                <div class="form-row">
+                   
+                    @Html.DropDownListFor(c => c.addressCity, Model.addressCityList, new { @class = "col-sm-3 form-control" })
+                    &nbsp;
+                    &nbsp;
+
+                    @Html.DropDownListFor(c => c.addressArea, Model.addresAreaList, new { @class = "col-sm-3 form-control" })
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                @Html.TextBoxFor(c => c.UpdateModel.User.Address, new { @class = "form-control", placeholder = "請輸入完整地址" })
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">上課地區</label>
+                @Html.DropDownListFor(c=>c.UpdateModel.User.Area, Model.AreaList, new { @multiple = "multiple" })
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">訓練項目</label>
+                
+                @Html.DropDownListFor(c => c.UpdateModel.User.TrainingProgramId, Model.TrainingProgramList, new { @multiple = "multiple" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">課程形式</label>
+                
+                @Html.DropDownListFor(c => c.UpdateModel.User.CourseId, Model.CourseList, new { @multiple = "multiple" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">自我介紹</label>
+                @Html.TextAreaFor(c => c.UpdateModel.User.Intoduction, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">Line ID</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.LineID, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">Facebook</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.FaceBook, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">Instagram</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Instagram, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+
+                <a data-toggle="collapse" href="#licensecard" aria-expanded="true">
+                    <label class="col-form-label">證照↓ </label>
+                </a>
+
+                <div class="dynamiclicense collapse show" id="licensecard">
+                   @if (Model.UpdateModel.OriginLicense.Count > 0)
+                   {
+                       foreach (var item in Model.UpdateModel.OriginLicense)
+                       {
+                        <div class="form-group license">
+
+                            <div class="form-inline">
+                               
+                                <input type="text" name="UpdateModel.User.License" value="@item" class="form-control" style="width:80%;" />
+                                &nbsp;<p class="delete">x</p>
+                            </div>
+
+                        </div>
+                       }
+                   }
+
+
+                </div>
+
+
+                <div class="col-md-12">
+
+                    <img src="~/Image/iconadd.png" class="addlicense" />
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <a data-toggle="collapse" href="#experiencecard" aria-expanded="true">
+                    <label class="col-form-label">經歷↓</label>
+                </a>
+                <div class="dynamicexperience collapse show" id="experiencecard">
+                    @if (Model.UpdateModel.OriginExperience.Count > 0)
+                    {
+                        foreach (var item in Model.UpdateModel.OriginExperience)
+                        {
+                            <div class="form-group experience" >
+
+                                <div class="form-inline">
+                                    <input type="text" name="UpdateModel.User.Experience" value="@item" class="form-control" style="width:80%;" />
+                                    &nbsp;<p class="delete">x</p>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                </div>
+
+
+                <div class="col-md-12">
+
+                    <img src="~/Image/iconadd.png" class="addexp" />
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <a data-toggle="collapse" href="#competitioncard" aria-expanded="true">
+                    <label class="col-form-label">比賽經驗↓</label>
+                </a>
+                <div class="dynamiccompetition collapse show" id="competitioncard">
+                    @if (Model.UpdateModel.OriginCompetition.Count > 0)
+                    {
+                        foreach (var item in Model.UpdateModel.OriginCompetition)
+                        {
+                            <div class="form-group competiton">
+
+                                <div class="form-inline">
+                                    <input type="text" name="UpdateModel.User.Competiton" value="@item" class="form-control" style="width:80%;" />
+                                    &nbsp;<p class="delete">x</p>
+                                </div>
+
+                            </div>
+
+                        }
+                    }
+
+
+                </div>
+
+
+                <div class="col-md-12">
+                    <img src="~/Image/iconadd.png" class="addcompetition" />
+
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="Update()">修改</button>
+            </div>
+
+        </div>
+
+
+    </form>
+
+
+
+    <!-- 證照 動態欄位 -->
+    <div class="form-group license" style="display:none">
+
+        <div class="form-inline">
+            <input type="text" name="User.License" value="" class="form-control" style="width:80%;" />
+            &nbsp;<p class="delete">x</p>
+        </div>
+
+    </div>
+    <!-- 經歷 動態欄位 -->
+    <div class="form-group experience" style="display:none">
+
+        <div class="form-inline">
+            <input type="text" name="User.Experience" value="" class="form-control" style="width:80%;" />
+            &nbsp;<p class="delete">x</p>
+        </div>
+
+    </div>
+    <!-- 比賽經驗 動態欄位 -->
+    <div class="form-group competiton" style="display:none">
+
+        <div class="form-inline">
+            <input type="text" name="User.Competiton" value="" class="form-control" style="width:80%;" />
+            &nbsp;<p class="delete">x</p>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        //生日
+        $("#UpdateModel_User_Birthday").datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+0"
+        });
+        //大頭照
+        $("#imageUpload").change(function () {
+            readURL(this);
+        });
+
+
+        $(function () {
+
+            $('#addressCity').on('change', function () {
+                console.log('onchange');
+                GetArea($(this).val());
+            });
+
+
+            $('#error').hide();
+            //動態新增表單欄位
+            $('.addlicense').click(function () {
+                $('.license').last().clone().appendTo('.dynamiclicense').show();
+                attach_delete();
+            });
+            $('.addexp').click(function () {
+                $('.experience').last().clone().appendTo('.dynamicexperience').show();
+                attach_delete();
+            });
+            $('.addcompetition').click(function () {
+                $('.competiton').last().clone().appendTo('.dynamiccompetition').show();
+                attach_delete();
+            });
+            var licensecount=@Model.UpdateModel.OriginLicense.Count;
+            var experiencecount=@Model.UpdateModel.OriginExperience.Count;
+            var competitioncount=@Model.UpdateModel.OriginCompetition.Count;
+
+            console.log('licensecount'+licensecount);
+            console.log('experiencecount'+experiencecount);
+            console.log('competitioncount'+competitioncount);
+            if(licensecount>0)
+            {
+                console.log('dynamiclicense show');
+                $('.dynamiclicense').show();
+            }
+            if(experiencecount>0)
+            {
+                console.log('dynamicexperience show');
+                $('.dynamicexperience').show();
+            }
+            if(competitioncount>0)
+            {     
+                console.log('dynamiccompetition show');
+                  $('.dynamiccompetition').show();
+            }
+            $('#UpdateModel_User_Area').multiSelect();
+            $('#UpdateModel_User_TrainingProgramId').multiSelect();
+            $('#UpdateModel_User_CourseId').multiSelect();
+
+
+        });
+        //Clone the hidden element and shows it
+
+
+        //Attach functionality to delete buttons
+        function attach_delete() {
+            $('.delete').off();
+            $('.delete').click(function () {
+                console.log("click");
+                $(this).closest('.form-group').remove();
+            });
+        }
+        function closeAlert() {
+            $('#error').hide();
+        }
+
+       
+        function GetArea(country) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetArea", "base")",
+                contentType: "application/json",
+                datatype: "json",
+                data: JSON.stringify({ City: country }),
+                success: function (data) {
+                    $('#addressArea').empty();
+                    $.each(data, function (index, value) {
+                        $('#addressArea').append($("<option></option>").attr("value", value).text(value));
+                    });
+
+                },
+                error: function (ex) {
+                    app.errorMsg = ex.Message;
+                    app.error = true;
+
+                }
+
+            });
+
+        }
+        
+        function Update() {
+            var formdata = new FormData($('#form1').get(0));
+            console.log('Register' + formdata);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateCoach", "Coach")",
+                processData: false,
+                contentType: false,
+                data: formdata,
+                success: function (data) {
+                    console.log(data.success);
+                    if (data.success) {
+                        alert('修改成功');
+                    }
+                    else {
+                        //alert('註冊失敗' + data.ex);
+                        $('#errorMsg').text(data.ex);
+
+                        $('#error').show();
+                    }
+                },
+                error: function (ex) {
+
+                    alert(ex.Message);
+
+                }
+
+            });
+        }
+
+
+    </script>
+}
+

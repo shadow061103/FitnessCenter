@@ -1,0 +1,164 @@
+﻿
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css
+{
+    <style>
+        a:hover {
+        text-decoration:none;
+        
+        }
+    </style>
+    }
+
+<div class="container" id="app">
+    <div v-show="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <p>{{errorMsg}}</p>
+        <button type="button" class="close"  aria-label="Close" v-on:click="closeAlert">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <form action="@Url.Action("Login")" method="post" >
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <h2>登入</h2>
+                <hr />
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>帳號</label>
+                <input type="text" class="form-control" v-model="model.Email" name="Email" placeholder="請輸入Email" />
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>密碼</label>
+                <input type="password" class="form-control" v-model="model.Password" name="Password" placeholder="請輸入密碼" />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>你是</label>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="State" v-model="model.State" value="0" checked>
+                    <label class="form-check-label" for="State">
+                        學員
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="State"  v-model="model.State" value="1">
+                    <label class="form-check-label" for="State">
+                        教練
+                    </label>
+                </div>
+                
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" v-model="model.autoLogin" id="autoLogin">
+                    <label class="form-check-label" for="autoLogin">
+                        下次自動登入
+                    </label>
+                </div>
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <button type="button" v-on:click="Login" class="btn btn-outline-primary btn-lg btn-block">登入</button>
+            </div>
+
+        </div>
+        <div class="form-row text-center hyper">
+            
+            <div class="offset-sm-3 col-sm-3">
+                <a href="#">忘記密碼</a>
+            </div>
+            <div class="col-sm-3">
+                <a href="@Url.Action("Register","Member")">註冊</a>
+            </div>
+        </div>
+        <br/>
+
+    </form>
+
+    
+
+    
+</div>
+
+@section scripts
+{
+    <script type="text/javascript">
+
+        var instance = {
+            Email:'',
+            Password:'',
+            State:0,
+            autoLogin:false
+
+        }
+
+        var app = new Vue({
+            el:'#app',
+            data: {
+                model: instance,
+                errorMsg:'',
+                error:false
+            },
+            methods: {
+                Login: function () {
+                    $.ajax({
+                        type: "POST",
+                        url: "@Url.Action("LoginUser", "Home")",
+                        contentType: "application/json;charset=utf-8",
+                        datatype: "json",
+                        data: JSON.stringify(app.model),
+                        success: function (data)
+                        {
+
+
+                            if (data.success) {
+                                console.log('success');
+                                window.location.href = '@Url.Action("Index","Home")';
+                            }
+                            else {
+                                console.log(data.ex);
+                                app.errorMsg = data.ex;
+                                console.log('app.errorMsg' + app.errorMsg);
+                                app.error = true;
+
+                            }
+                        },
+                        error: function (ex)
+                        {
+
+                            alert(ex.Message);
+                        }
+
+                    });
+
+
+                },
+                closeAlert: function () {
+                    app.error = false;
+
+                }
+            }
+
+
+        });
+
+
+    </script>
+    }

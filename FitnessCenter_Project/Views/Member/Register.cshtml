@@ -1,0 +1,288 @@
+﻿@model FitnessCenterModel.ViewModel.RegisterMebmberViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css{
+    <link href="~/Content/imageupload.css" rel="stylesheet" />
+  
+}
+<div class="container" >
+    <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <p id="errorMsg"></p>
+        <button type="button" class="close" aria-label="Close" onclick="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="@Url.Action("RegisterMember","Member")" id="form1" method="post" enctype="multipart/form-data">
+
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <h2>學員註冊</h2>
+                <hr />
+            </div>
+        </div>
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="imageUpload" name="Image" accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload">
+                            <img src="~/Image/edit.png" />
+                        </label>
+                    </div>
+                    <div class="avatar-preview">
+                        <div id="imagePreview" style="background-image: url(http://i.pravatar.cc/500?img=7);">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>Email</label>
+                @Html.TextBoxFor(c=>c.User.Email,new  { @class= "form-control",placeholder= "請輸入Email" })
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>密碼</label>
+                @Html.PasswordFor(c=>c.User.Password,new { @class= "form-control" })
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>姓名</label>
+                @Html.TextBoxFor(c => c.User.Name, new { @class = "form-control"})
+               
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>暱稱</label>
+                
+                @Html.TextBoxFor(c => c.User.NickName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-grop">
+            <div class="offset-sm-3 col-sm-6">
+                <label>性別</label>
+                <div class="form-check form-check-inline">
+                    
+                    <input type="radio" name="User.Gender" class="form-check-input" value="0" checked />
+                    <label class="form-check-label" for="Gender">
+                        男
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    
+                    <input type="radio" name="User.Gender" class="form-check-input" value="1" />
+                    <label class="form-check-label" for="Gender">
+                        女
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>手機</label>
+                @Html.TextBoxFor(c=>c.User.Phone,new { @class= "form-control" })
+               
+            </div>
+        </div>
+        <div class="row form-grop">
+            <div class="offset-sm-3 col-sm-6">
+                <label>生日</label>
+               @Html.TextBoxFor(c=>c.User.Birthday,new { @class= "form-control" , @id = "User_Birthday" })
+               
+            </div>
+        </div>
+        <div class="row form-group">
+
+
+            <div class="offset-sm-3 col-sm-6">
+                <label class="form-label">地址</label>
+                <div class="form-row">
+                    <select class="col-sm-3 form-control" id="addressCity" name="addressCity">
+                       
+                    </select>
+                    &nbsp;
+                    &nbsp;
+                    <select class="col-sm-3 form-control" id="addressArea" name="addressArea">
+                        
+                    </select>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                @Html.TextBoxFor(c=>c.User.Address,new { @class= "form-control",placeholder= "請輸入完整地址" })
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">上課地區</label>
+                <select id='multiselectarea' multiple='multiple' name="User.Area">
+                    
+                </select>
+
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="Register()">註冊</button>
+            </div>
+
+        </div>
+
+
+    </form>
+
+
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        //生日
+        $("#User_Birthday").datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+0"
+        });
+        //大頭照
+        $("#imageUpload").change(function () {
+            readURL(this);
+        });
+
+
+        $(function () {
+            GetCountry();
+           
+            $('#addressCity').on('change', function () {
+                console.log('onchange');
+                GetArea($(this).val());
+            });
+            
+            
+            $('#error').hide();
+
+        });
+        function closeAlert()
+        {
+            $('#error').hide();
+        }
+
+        //地區列表
+        function GetCountry() {
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetCountryList", "base")",
+                contentType: "application/json;charset=utf-8",
+                datatype: "json",
+                success: function (data) {
+
+
+
+                    $.each(data, function (index,value) {
+                        $('#addressCity').append($("<option></option>").attr("value", value).text(value));
+                        $('select[name="User.Area"]').append($("<option></option>").attr("value", value).text(value));
+                    });
+                    $('#multiselectarea').multiSelect(); //放這邊才會正常顯示
+                    
+                    GetArea($('#addressCity option:first').val()); //初始化
+                },
+                error: function (ex) {
+
+                }
+
+            });
+        }
+        function GetArea(country) {
+            
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetArea", "base")",
+                contentType: "application/json",
+                datatype: "json",
+                data: JSON.stringify({ City: country }),
+                success: function (data) {
+                    $('#addressArea').empty();
+                    $.each(data, function (index, value) {
+                        $('#addressArea').append($("<option></option>").attr("value", value).text(value));
+                    });
+
+                },
+                error: function (ex) {
+                    app.errorMsg = ex.Message;
+                    app.error = true;
+
+                }
+
+            });
+
+        }
+        function Register()
+        {
+            var formdata = new FormData($('#form1').get(0));
+            console.log('Register' + formdata);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("RegisterMember", "Member")",
+                processData: false,
+                contentType: false,
+                data:formdata,
+                success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
+
+                    window.location.href = '@Url.Action("Login", "Home")';
+                    console.log('註冊成功');
+                }
+                else
+                {
+                    //alert('註冊失敗' + data.ex);
+                    $('#errorMsg').text(data.ex);
+                    
+                    $('#error').show();
+                }
+            },
+            error: function (ex) {
+                
+                alert(ex.Message);
+
+            }
+
+        });
+        }
+
+
+    </script>
+}
+

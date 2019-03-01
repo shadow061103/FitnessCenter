@@ -1,0 +1,236 @@
+@model FitnessCenterModel.ViewModel.CoachDetailViewModel
+
+@{
+    ViewBag.Title = "CoachDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/4.0/examples/blog/blog.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .jumbotron {
+        background: url(../../Image/70079.jpg)  no-repeat center center; 
+        
+        }
+        .lbtn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
+
+        #map {
+        height:400px;
+        width:100%;
+        position:relative;
+        overflow:hidden;
+        
+        }
+        .reserve {
+        background-color:#e9ecef;
+        }
+        .rbtn {
+        border-radius:2.6rem;    
+            
+        }
+    </style>
+}
+<div class="container">
+    
+    
+        <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" >
+            <div class="col-md-6 px-0">
+                <h1 class="display-4 font-italic">教練資料</h1>
+                <p class="lead my-3">透過平台快速找到適合您的教練</p>
+                
+            </div>
+        </div>
+        <div class="row mb-2">
+            <div class="col-md-12" >
+                
+                
+                <div class="card flex-md-row mb-4 box-shadow h-md-250" style="height:350px;">
+                    <img class="card-img-right flex-auto d-none d-md-block" src="~/Image/1474376763830601.jpg" alt="Card image cap" />
+                    <div class="card-body d-flex flex-column align-items-start">
+                       
+                        <h3 class="mb-0">
+                            <a class="text-dark" href="#">李芷晴 Kelli Li </a>
+                        </h3>
+                       
+                        <p class="card-text">
+                            團體課,一對一私人服務,雙人同時訓練,小型包班,企業合作,競賽團隊輔佐
+                        </p>
+                        <p class="card-text">訓練項目： 體態雕塑,舞蹈</p>
+                        <div class="form-inline">
+                            
+                                <a class="lbtn btn btn-secondary btn-sm" href="">
+                                    <i class="fa fa-instagram"></i>
+                                </a>&nbsp;
+                                <a class="lbtn btn btn-danger btn-sm" rel="publisher"
+                                   href="">
+                                    <i class="fa fa-google-plus"></i>
+                                </a>&nbsp;
+                                <a class="lbtn btn btn-primary btn-sm" rel="publisher"
+                                   href="">
+                                    <i class="fa fa-facebook"></i>
+                                </a>&nbsp;
+                               
+                            
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+               
+            </div>
+            
+        </div>
+
+
+
+
+
+    
+
+
+</div>
+<main role="main" class="container">
+    <div class="row">
+        <div class="col-md-8 blog-main">
+            
+            <div class="blog-post">
+                <h2 class="blog-post-title">介紹</h2>
+                
+                
+                <p>
+                    Kelli Li ，是一位集多重風貌於一身的舞蹈藝術家，造訪世界各地學習古典東方舞、部落融合風格、阿拉伯民族舞蹈、以及中東音樂。她卓越且獨樹一格的表現方式，呈現出她獨特的個人魅力，也已被普羅大眾所認同。她能優雅且巧妙地穿梭融合各種舞風，並將其主要精髓清楚不失其各自特色的表現出來。Kelli來自於台灣台北，四歲開始學習芭蕾，這些年同步學習爵士、街舞、現代舞及瑜珈等，致力於結合不同的肢體使用進入自身舞蹈風格。
+
+                    Kelli主要在台北授課，近年常受邀至台灣其他城市授課、演出外，也更在海外不定期授課與演出。
+                    演出國家：美國、法國、中國、日本、香港、南韓、捷克、義大利、英國、德國等
+                    授課國家：美國、德國、法國、南韓、中國、日本、韓國、香港等
+                </p>
+                
+            
+                <h2>專業證照</h2>
+                <p>
+                    
+                    The Tribal Massive Bellydance Academy (NV, USA) / Professional Track
+                    DanceCraft / by Zoe Jakes (CA, USA)/ Key of Spades (Level 2)
+                    </p>
+                <p>
+                    
+                    The Tribal Massive Bellydance Academy (NV, USA) / Professional Track
+                    TRX / Suspension Training Course
+                </p>
+                <p>
+                    
+                    The Tribal Massive Bellydance Academy (NV, USA) / Professional Track
+                    Raqs Flow/ Saide (CO, USA) / Raqs Level 1
+                    S.I.G.I.L Program Certification
+                </p>
+                <h3>個人經歷</h3>
+
+                <p>
+                    演出經驗
+                    2017
+                    台大EMBA校友基金會/ 「天使路跑、傳愛寶島」公益路跑 閉幕演出 (台北, 台灣)
+                    Lululemon Taiwan/ 假日櫥窗藝文演出 (台北, 台灣)
+                    Electric Nomad/ Eternal Forest (VA, USA)
+                    張羽鎔/ 部落花園- 融合風肚皮舞嘉年華 （台中, 台灣）
+                    現代保險理財基金會/ 保險信望愛頒獎典禮 開幕演出(台北, 台灣)
+                    Tribal Hanover/ Tribal Hanover Festival in Hanover, Germany (Hanover, GE)
+                    Jiya Dance/ Dance Constellation Gala Show (HK)
+                    The Tribal Massive/ The Massive Spectacular (Vegas, USA)
+                    Tida/ MIFTAAH Vol.6 (Tokyo, Japan)
+                </p>
+                
+                
+            <h3>教學或競賽經驗</h3>
+                <p>
+                    教學經驗
+                    2017
+                    勵馨基金會/ 瑜伽舞蹈工作坊師資
+                    Lululemon Taiwan/ 瑜伽舞蹈工作坊師資
+                    台北市政府社會局- 大同親子館/ 親子肚皮舞師資
+                    Tribal Hanover Festival in Hanover, Germany / workshop instructor
+                    Summer Tribal in Montpellier, France / workshop instructor
+                    Kelli Li Bellydance Workshop in HK / workshop instructor
+                    Workshop with Kelli in Tokyo Japan / workshop instructor
+                    Dance from the Heart Presents Kelli Li / workshop instructor
+                    舞極緻- 雙師研習營 vol.2 / workshop instructor
+                    Workshop with Kelli in Tokyo Japan / workshop instructor
+                </p>
+               
+                
+            </div><!-- /.blog-post -->
+
+            
+            
+           
+
+        </div><!-- /.blog-main -->
+
+        <aside class="col-md-4 blog-sidebar">
+            <div class="reserve p-3 mb-3  rounded">
+                
+                <button class="rbtn btn btn-success btn-lg btn-block">邀請面談</button>
+               <button class="rbtn btn btn-danger btn-lg btn-block">預約服務</button>
+               
+             </div>
+
+            <div  id="map" >
+                
+               
+
+
+
+
+            </div>
+
+           
+        </aside><!-- /.blog-sidebar -->
+
+    </div><!-- /.row -->
+
+</main><!-- /.container -->
+
+@section scripts{
+<script>
+        function initMap() {
+            var Station_latlng = { lat: 25.064385, lng: 121.575554 };	// 台北車站的經緯度
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 14,	//放大的倍率
+                center: Station_latlng	//初始化的地圖中心位置
+            });
+
+            //--------下面是呼叫一個新marker------
+
+            var marker = new google.maps.Marker({
+                position: Station_latlng,	//marker的放置位置
+                icon: 'https://maps.google.com/mapfiles/kml/shapes/parking_lot_maps.png',
+                map: map //這邊的map指的是第四行的map變數
+            });
+            //獲取當前位置
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    var pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    var marker = new google.maps.Marker({
+                        position: pos,
+                        icon: 'marker.png',
+                        map: map
+                    });
+                    map.setZoom(17);
+                    map.setCenter(pos);
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                alert("未允許或遭遇錯誤！");
+            }
+
+        }
+</script>
+
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAjhH385GPRDKPcJKATns3NdqpB7bKUOwY&callback=initMap">
+</script>
+}

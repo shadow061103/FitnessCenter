@@ -1,0 +1,261 @@
+﻿@model FitnessCenterModel.ViewModel.CoachListViewModel
+@using PagedList.Mvc
+@{
+    ViewBag.Title = "CoachList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css
+{
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+    <style>
+        .search-sec {
+            padding: 2rem;
+        }
+
+        .search-slt {
+            display: block;
+            width: 100%;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            color: #55595c;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #ccc;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        .wrn-btn {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: capitalize;
+            height: calc(3rem + 2px) !important;
+            border-radius: 0;
+        }
+
+        @@media (min-width: 992px) {
+            .search-sec {
+                position: relative;
+                top: -130px;
+                background: rgba(157, 159, 160, 0.51);
+            }
+        }
+
+        @@media (max-width: 992px) {
+            .search-sec {
+                background: #1A4668;
+            }
+        }
+
+        
+
+        .card-img-top { /*教練小圖*/
+            padding-top: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
+            border-radius: 25px;
+        }
+
+        a {
+            line-height: inherit;
+            color: #00284D;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+            a:hover {
+                text-decoration: none;
+                color: inherit !important;
+            }
+        .card {
+        
+        height:570px;
+        }
+        .card-deck {
+        width:100%;
+        }
+        .card-text {
+        font-size:15px;
+        
+        }
+        .carousel-item.active {
+        width:100% !important;
+        
+        }
+            .carousel-item > img {
+            width: 1950px;
+            height: 600px;
+            
+            }
+    </style>
+
+
+}
+
+
+<section>
+    <div id="carouselExampleFade" class="carousel slide carousel-fade" data-ride="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                @*<img src="https://upload.wikimedia.org/wikipedia/commons/8/8d/Yarra_Night_Panorama%2C_Melbourne_-_Feb_2005.jpg" class="d-block w-100" alt="...">*@
+                <img src="~/Image/Sadik-Hadzovic.jpg" class="d-block" alt="..." />
+
+            </div>
+
+            <div class="carousel-item">
+
+                <img src="~/Image/gym2.jpg" class="d-block" alt="..." />
+            </div>
+            <div class="carousel-item">
+
+                <img src="~/Image/gym3.jpg" class="d-block" alt="..." />
+            </div>
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+</section>
+<section>
+    <div class="container">
+        <form action="@Url.Action("CoachList","CoachSearch")" method="post" novalidate="novalidate" id="form1">
+
+            <div class="row search-sec">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            @Html.DropDownListFor(c=>c.searchPara.TrainingProgramId, Model.TrainingProgramList,new { @class= "form-control search-slt" })
+                           
+
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            @Html.DropDownListFor(c => c.searchPara.CourseId, Model.CourseList, new { @class = "form-control search-slt" })
+                            
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            @Html.DropDownListFor(c => c.searchPara.Area, Model.AreaList, new { @class = "form-control search-slt" })
+                           
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-12 p-0">
+                            <button type="submit" class="btn btn-danger wrn-btn">搜尋</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*教練列表開始*@
+            <div class="row">
+                <div class="card-deck">
+                    <!--教練區塊-->
+                   @*<div class="col-sm-4">
+
+                        <div class="card border-success mb-3">
+                            <a href="#">
+                                <img class="card-img-top" src="~/Image/1474376763830601.jpg">
+
+                                <div class="card-body">
+                                    <h5 class="card-title">Card title</h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+
+                                </div>
+                            </a>
+                        </div>
+
+
+                    </div>*@
+                    <!--教練區塊-->
+                   @if (Model.coachList.Count > 0)
+                   {
+                       foreach (var coach in Model.coachList)
+                       {
+                           string Course = string.Join("/", coach.Course);
+                           string TrainProgram = string.Join("/", coach.TrainingProgram);
+                           
+                           string imagePath = coach.ImageName + ".jpg";
+
+                            <div class="col-sm-4">
+
+                                <div class="card border-success mb-3">
+                                    <a href="@Url.Action("CoachDetail","CoachSearch",new { MemberId=coach.MemberId})">
+                                        <img class="card-img-top" src="~/CoachImage/@imagePath">
+                                        
+                                        <div class="card-body">
+                                            <h5 class="card-title">@coach.Name</h5>
+                                            <h6 class="card-subtitle mb-2 text-muted">@coach.NickName</h6>
+                                            <p class="card-text">
+                                                <span style="font-weight:bold;">@TrainProgram</span> <br />
+                                               <span >@Course</span> <br/>
+                                                
+
+                                            </p>
+
+                                        </div>
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        }
+                    }
+                 
+
+
+                </div>
+               
+            </div>
+            <div class="row">
+                <div class="offset-sm-3 col-sm-6" style="align-content:center;">
+                    @Html.PagedListPager(Model.coachList, page => Url.Action("CoachList", new { page }))
+                </div>
+                
+            </div>
+            @*教練列表結束*@
+        </form>
+    </div>
+</section>
+@functions{
+    public string DisplayImage(byte[] imageData)
+    {
+        string imgSrc = string.Empty;
+        if (imageData != null)
+        {
+            MemoryStream ms = new MemoryStream();
+            ms.Write(imageData, 78, imageData.Length - 78);
+            string base64 = Convert.ToBase64String(ms.ToArray());
+            imgSrc=string.Format("data:image/jpeg;base64,{0}", base64);
+        }
+        return imgSrc;
+
+    }
+
+}
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('.pagination>li>a[href]').each(function (i, item) {
+
+                var page = $(item).attr('href').replace(/[\/\?a-zA-Z\=]*/, '');
+                console.log('page:' + page);
+                $(item).attr('href', '#').click(function () { postPage(page); });
+
+            });
+        });
+        function postPage(page) {
+            $('<input>')
+                .attr({ type: 'hidden', id: 'PageIndex', name: 'PageIndex', value: page })
+                .appendTo($('#form1'));
+            $('#form1').submit();
+
+        };
+
+    </script>
+}

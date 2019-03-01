@@ -1,0 +1,269 @@
+﻿@model FitnessCenterModel.ViewModel.UpdateMemberViewModel
+@using Newtonsoft.Json;
+@{
+    ViewBag.Title = "UpdateMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section css{
+    <link href="~/Content/imageupload.css" rel="stylesheet" />
+
+}
+<div class="container">
+    <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+        <p id="errorMsg"></p>
+        <button type="button" class="close" aria-label="Close" onclick="closeAlert()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <form action="@Url.Action("UpdateMember", "Member")" id="form1" method="post" enctype="multipart/form-data">
+       
+        @Html.HiddenFor(c => c.UpdateModel.User.MemberId)
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <h2>學員資料修改</h2>
+                <hr />
+            </div>
+        </div>
+       
+       <div style="display:none">
+           <!--hidden不能存list 改隱藏起來-->
+           @Html.EditorFor(c=> c.UpdateModel.OriginArea)
+       </div>
+        <div class="row">
+            <div class="offset-sm-3 col-sm-6">
+                <div class="avatar-upload">
+                    <div class="avatar-edit">
+                        <input type='file' id="imageUpload" name="Image" accept=".png, .jpg, .jpeg" />
+                        <label for="imageUpload">
+                            <img src="~/Image/edit.png" />
+                        </label>
+                    </div>
+                    <div class="avatar-preview">
+                        @{ 
+                            string imagePath = Model.UpdateModel.User.Image + ".jpg";
+
+                        }
+                         
+                        <div id="imagePreview" style="background-image: url(/MemberImage/@imagePath);">
+                            
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>Email</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Email, new { @class = "form-control",@readonly="readonly" })
+
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>姓名</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Name, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>暱稱</label>
+
+                @Html.TextBoxFor(c => c.UpdateModel.User.NickName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row form-grop">
+            <div class="offset-sm-3 col-sm-6">
+                <label>性別</label>
+                <div class="form-check form-check-inline">
+
+                    @Html.RadioButtonFor(c => c.UpdateModel.User.Gender, "0", new { @class = "form-check-input" })
+                    
+                    <label class="form-check-label" for="Gender">
+                        男
+                    </label>
+                </div>
+                <div class="form-check form-check-inline">
+                    @Html.RadioButtonFor(c => c.UpdateModel.User.Gender, "1", new { @class = "form-check-input" })
+                    
+                    <label class="form-check-label" for="Gender">
+                        女
+                    </label>
+                </div>
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label>手機</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Phone, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="row form-grop">
+            <div class="offset-sm-3 col-sm-6">
+                <label>生日</label>
+                @Html.TextBoxFor(c => c.UpdateModel.User.Birthday, "{0:yyyy/MM/dd}", new { @class = "form-control" })
+               
+            </div>
+        </div>
+        <div class="row form-group">
+
+
+            <div class="offset-sm-3 col-sm-6">
+                <label class="form-label">地址</label>
+                <div class="form-row">
+                    @Html.DropDownListFor(c => c.addressCity, Model.addressCityList, new { @class = "col-sm-3 form-control" })
+                   
+                    &nbsp;
+                    &nbsp;
+                    @Html.DropDownListFor(c => c.addressArea, Model.addresAreaList, new { @class = "col-sm-3 form-control" })
+                    
+                </div>
+
+            </div>
+
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                @Html.TextBoxFor(c => c.UpdateModel.User.Address, new { @class = "form-control", placeholder = "請輸入完整地址" })
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <label class="col-form-label">上課地區</label>
+              
+
+                @Html.DropDownListFor(c=>c.UpdateModel.User.Area, Model.AreaList, new { @multiple = "multiple" })
+               
+                
+            </div>
+        </div>
+        
+        <div class="row form-group">
+            <div class="offset-sm-3 col-sm-6">
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block" onclick="Update()">修改</button>
+            </div>
+
+        </div>
+
+
+    </form>
+
+
+
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#imagePreview').css('background-image', 'url(' + e.target.result + ')');
+                    $('#imagePreview').hide();
+                    $('#imagePreview').fadeIn(650);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+
+        //生日
+        $("#UpdateModel_User_Birthday").datepicker({
+            dateFormat: 'yy/mm/dd',
+            changeMonth: true,
+            changeYear: true,
+            yearRange: "-50:+0"
+        });
+        //大頭照
+        $("#imageUpload").change(function () {
+            readURL(this);
+        });
+
+
+        $(function () {
+            
+
+            $('#addressCity').on('change', function () {
+                console.log('onchange');
+                GetArea($(this).val());
+            });
+
+
+            
+            $('#UpdateModel_User_Area').multiSelect();
+            $('#error').hide();
+
+        });
+        function closeAlert()
+        {
+            $('#error').hide();
+        }
+
+      
+        function GetArea(country) {
+
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("GetArea", "base")",
+                contentType: "application/json",
+                datatype: "json",
+                data: JSON.stringify({ City: country }),
+                success: function (data) {
+                    $('#addressArea').empty();
+                    $.each(data, function (index, value) {
+                        $('#addressArea').append($("<option></option>").attr("value", value).text(value));
+                    });
+
+                },
+                error: function (ex) {
+                    app.errorMsg = ex.Message;
+                    app.error = true;
+
+                }
+
+            });
+
+        }
+        function Update()
+        {
+            var formdata = new FormData($('#form1').get(0));
+            console.log('UpdateMember' + formdata);
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateMember", "Member")",
+                processData: false,
+                contentType: false,
+                data:formdata,
+                success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
+                    console.log('修改成功');
+                    alert('修改成功');
+                }
+                else
+                {
+                    //alert('註冊失敗' + data.ex);
+                    $('#errorMsg').text(data.ex);
+
+                    $('#error').show();
+                }
+            },
+            error: function (ex) {
+
+                alert(ex.Message);
+
+            }
+
+        });
+        }
+
+
+    </script>
+}

@@ -1,0 +1,201 @@
+﻿@model FitnessCenterModel.ViewModel.ServiceDetailModel
+
+@{
+    ViewBag.Title = "CoachServiceDatail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section css
+{
+    <style>
+        .container {
+            min-height: 800px;
+        }
+    </style>
+}
+<div class="container">
+    <form action="@Url.Action("CoachInterViewDetail","Reserve")" method="post">
+        @Html.HiddenFor(c => c.Service.OrderId)
+        <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+
+            <p id="errorMsg"></p>
+            <button type="button" class="close" aria-label="Close" onclick="closeAlert()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="row">
+            <div class="offset-sm-5 col-sm-6">
+                <h2>服務</h2>
+                <hr />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>學員</label>
+            </div>
+            <div class="col-sm-6">
+                @{
+                    string imagePath = Model.Service.MemberImage + ".jpg";
+
+
+                }
+                <img src="~/MemberImage/@imagePath" />
+                <label>@Model.Service.MemberName</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>預約狀態</label>
+            </div>
+            <div class="col-sm-6">
+                @Html.DropDownListFor(c => c.Service.StatusId, Model.StatusList, new { @class = "form-control" })
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>性別</label>
+            </div>
+            <div class="col-sm-6">
+                @{
+                    string Gender = Model.Service.MemberGenger == 0 ? "男" : "女";
+                }
+                <label>@Gender</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>Email</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label><a href="mailto:@Model.Service.MemberEmail">@Model.Service.MemberEmail</a></label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>手機</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.MemberPhone</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>主要訓練項目</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.TrainingProgram</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>課程形式</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.Course</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>日期</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.ServiceDate</label>
+            </div>
+        </div>
+       
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>上課地點</label>
+            </div>
+            <div class="col-sm-6">
+
+                <span>
+                    @Model.Service.Location
+                </span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>收費</label>
+            </div>
+            <div class="col-sm-6">
+
+                <span>
+                    @Model.Service.Charge
+                </span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-4 col-sm-6">
+                <button type="button" class="btn btn-outline-primary btn-lg" onclick="Update()">送出</button>
+                <button type="button" class="btn btn-outline-secondary btn-lg" onclick="Back()">回上頁</button>
+            </div>
+
+        </div>
+    </form>
+
+
+</div>
+@section scripts{
+    <script type="text/javascript">
+        function Update()
+        {
+
+            var formdata = {
+                OrderId: $("#Service_OrderId").val(),
+                StatusId: $("#Service_StatusId").val(),
+            };
+            console.log("Update"+JSON.stringify(formdata));
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateService", "Reserve")",
+                processData: false,
+                contentType: "application/json;charset=utf-8",
+                data: JSON.stringify(formdata),
+            success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
+
+                    alert('修改成功');
+
+                }
+                else
+                {
+                   
+                    $('#errorMsg').text(data.ex);
+                    $('#error').show();
+                }
+            },
+            error: function (ex) {
+
+                alert(ex.Message);
+
+            }
+
+        });
+
+        }
+        function Back()
+        {
+            window.location.href = "@Url.Action("OrderList","Reserve")";
+        }
+        function closeAlert() {
+            $('#error').hide();
+        }
+        $(function () {
+            $('#error').hide();
+        });
+    </script>
+
+}
+
+
+
+

@@ -1,0 +1,166 @@
+﻿@model FitnessCenterModel.ViewModel.ServiceDetail
+
+@{
+    ViewBag.Title = "MemberServiceDetail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@section css
+{
+    <style>
+        .container {
+            min-height: 800px;
+        }
+
+        img {
+            max-width: 300px;
+        }
+    </style>
+}
+<div class="container">
+    <form action="@Url.Action("MemberInterViewDetail","Reserve")" method="post">
+
+
+        <div class="row">
+            <div class="offset-sm-5 col-sm-6">
+                <h2>服務</h2>
+                <hr />
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>教練</label>
+            </div>
+            <div class="col-sm-6">
+                @{
+                    string imagePath = Model.Service.CoachImage + ".jpg";
+
+
+                }
+                <img src="~/CoachImage/@imagePath" />
+                <label>@Model.Service.CoachName</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>預約狀態</label>
+            </div>
+            <div class="col-sm-6">
+
+                @if (Model.Service.Status == "教練拒絕")
+                {
+                    <label>@Model.Service.Status</label>
+                }
+                else
+                {
+                    <div class="progress">
+                        @{
+                            var status = Model.Status.Where(c => c.ID == Model.Service.StatusId).FirstOrDefault();
+                            int index = Model.Status.IndexOf(status);
+                            string progress = Convert.ToString((100 / 6) * (index + 1));
+                        }
+
+                        <div class="progress-bar" role="progressbar" style="width: @progress%;" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">@Model.Service.Status</div>
+                    </div>
+                            }
+
+
+
+
+
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>Email</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label><a href="mailto:@Model.Service.CoachEmail">@Model.Service.CoachEmail</a></label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>手機</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.CoachPhone</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>Line Id</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.LineID</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>訓練項目</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.TrainingProgram</label>
+                
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>上課形式</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.Course</label>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>上課日期</label>
+            </div>
+            <div class="col-sm-6">
+
+                <label>@Model.Service.ServiceDate</label>
+            </div>
+        </div>
+
+        <div class="row form-group">
+            <div class="offset-sm-1 col-sm-4">
+                <label>面談地點</label>
+            </div>
+            <div class="col-sm-6">
+
+                <span>
+                    @Model.Service.Location
+                </span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-4 col-sm-6">
+
+                <button type="button" class="btn btn-outline-secondary btn-lg" onclick="Back()">回上頁</button>
+            </div>
+
+        </div>
+    </form>
+
+
+</div>
+@section scripts{
+    <script type="text/javascript">
+
+
+
+        function Back()
+        {
+            window.location.href = "@Url.Action("OrderList","Reserve")";
+        }
+
+    </script>
+
+}
+
