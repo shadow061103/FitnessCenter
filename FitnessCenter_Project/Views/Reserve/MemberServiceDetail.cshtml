@@ -58,13 +58,13 @@
                         @{
                             var status = Model.Status.Where(c => c.ID == Model.Service.StatusId).FirstOrDefault();
                             int index = Model.Status.IndexOf(status);
-                            string progress = Convert.ToString((100 / 6) * (index + 1));
+                            string progress = Convert.ToString((100 / (Model.Status.Count()-1)) * (index + 1));
                         }
 
                         <div class="progress-bar" role="progressbar" style="width: @progress%;" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">@Model.Service.Status</div>
                     </div>
                             }
-
+                @Html.HiddenFor(c=>c.Service.StatusId)
 
 
 
@@ -130,18 +130,26 @@
 
         <div class="row form-group">
             <div class="offset-sm-1 col-sm-4">
-                <label>面談地點</label>
+                <label>上課地點</label>
             </div>
             <div class="col-sm-6">
 
                 <span>
-                    @Model.Service.Location
+                    @Html.TextBoxFor(c => c.Service.Location, new { @class = "form-control" })
+                   
                 </span>
             </div>
         </div>
         <div class="row form-group">
             <div class="offset-sm-4 col-sm-6">
-
+                @if (Model.Service.StatusId == 1)//還沒確認可以改地點
+                {
+                    <button type="button" class="btn btn-outline-success btn-lg" onclick="Update($('#Service_StatusId').val())">送出</button>
+                }
+                @if (Model.Service.StatusId == 2)
+                {
+                    <button type="button" class="btn btn-outline-success btn-lg" onclick="Update(3)">確認付款</button>
+                }
                 <button type="button" class="btn btn-outline-secondary btn-lg" onclick="Back()">回上頁</button>
             </div>
 
@@ -152,7 +160,44 @@
 </div>
 @section scripts{
     <script type="text/javascript">
+        function Update(StatusId) {
+            var formdata = {
+                OrderId: @Model.Service.OrderId,
+                StatusId:StatusId,
+                Location: $("#Service_Location").val()
+            };
+            console.log("Update" + JSON.stringify(formdata));
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateService", "Reserve")",
+                processData: false,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(formdata),
+            success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
 
+                    alert('修改成功');
+                    window.location.href = "@Url.Action("OrderList","Reserve")";
+                }
+                else
+                {
+                    //alert('註冊失敗' + data.ex);
+                    $('#errorMsg').text(data.ex);
+                    $('#error').show();
+                }
+            },
+            error: function (ex) {
+
+                alert(ex.Message);
+
+            }
+
+        });
+
+
+        }
 
 
         function Back()

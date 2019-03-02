@@ -10,6 +10,7 @@ namespace FitnessCenterModel.Para
     {
         public int OrderId { get; set; }
         public int StatusId { get; set; }
+        public string Location { get; set; }
     }
     public class UpdateServicePara: UpdateInterview
     {

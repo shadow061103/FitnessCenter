@@ -40,16 +40,16 @@ namespace FitnessCenter_Project.Controllers
         [HttpPost]
         public ActionResult ReserveInterveiw(ReserveInterviewModel model)
         {
-            ReserveService service = new ReserveService();
-            var result = service.reserveInterview(model.Para);
+            
+            var result = ReserveService.Instance.reserveInterview(model.Para);
             return Json(new { success = result.ReturnNo == 1 ? true : false, ex = result.Message },
                  JsonRequestBehavior.AllowGet);
         }
         //預約服務
-        public ActionResult ReserveService(string CoachId,string CoachName)
+        public ActionResult ReserveClass(string CoachId,string CoachName)
         {
             ReserveServiceModel model = new ReserveServiceModel();
-            ReserveService service = new ReserveService();
+            
             if (LoginState)
             {
                 User member = GetMemberInfo();
@@ -66,8 +66,8 @@ namespace FitnessCenter_Project.Controllers
                 model.CoachName = CoachName;
                 
                 //教練有服務的項目
-                var trainprogrem= service.GetCoachTraingProgramList(coach.TrainingProgramId.ToArray());
-                var course = service.GetCoachCourseList(coach.CourseId.ToArray());
+                var trainprogrem= ReserveService.Instance.GetCoachTraingProgramList(coach.TrainingProgramId.ToArray());
+                var course = ReserveService.Instance.GetCoachCourseList(coach.CourseId.ToArray());
                 model.TrainProgramList = new SelectList(trainprogrem, "Value", "Text");
                 model.CourseList = new SelectList(course, "Value", "Text");
                 return View(model);
@@ -81,10 +81,10 @@ namespace FitnessCenter_Project.Controllers
             
         }
         [HttpPost]
-        public ActionResult ReserveService(ReserveServiceModel model)
+        public ActionResult ReserveClass(ReserveServiceModel model)
         {
-            ReserveService service = new ReserveService();
-            var result = service.reserveService(model.Para);
+            
+            var result = ReserveService.Instance.reserveClass(model.Para);
             return Json(new { success = result.ReturnNo == 1 ? true : false, ex = result.Message },
                  JsonRequestBehavior.AllowGet);
 
@@ -93,13 +93,13 @@ namespace FitnessCenter_Project.Controllers
         //預約服務/面談 檢視
         public ActionResult OrderList()
         {
-            ReserveService service = new ReserveService();
+            
             if (LoginState)
             {
                 User member = GetMemberInfo();
                 OrderListModel model = new OrderListModel() {
-                    inserview= service.SearchInterview(member.MemberId,member.State),
-                    service=service.SearchService(member.MemberId, member.State),
+                    inserview= ReserveService.Instance.SearchInterview(member.MemberId,member.State),
+                    service= ReserveService.Instance.SearchService(member.MemberId, member.State),
                     State=member.State
                 };
 
@@ -116,17 +116,18 @@ namespace FitnessCenter_Project.Controllers
         //教練檢視
         public ActionResult CoachInterViewDetail(int OrderId=1)
         {
-            ReserveService service = new ReserveService();
-            int[] status =new int[] { 1, 2, 4, 5, 6 };//DB定義的Status ID
+            
+            int[] status =new int[] { 1, 2, 4, 6};//DB定義的Status ID
+            string[] disabled = new string[] { "6" };
             if (LoginState)
             {
                 User member = GetMemberInfo();
-                Interview interview = service.SearchInterview(member.MemberId, member.State)
+                Interview interview = ReserveService.Instance.SearchInterview(member.MemberId, member.State)
                     .Where(c=>c.OrderId.Equals(OrderId)).FirstOrDefault();
-                var statusList= service.OrderStatusList(interview.StatusId, status);
+                var statusList= ReserveService.Instance.OrderStatusList(interview.StatusId, status);
                var model = new InterViewDetailModel()
                 {
-                    StatusList = new SelectList(statusList, "Value", "Text"),
+                    StatusList = new SelectList(statusList, "Value", "Text", interview.StatusId, disabled),
                     interview = interview,
                    
                };
@@ -139,13 +140,13 @@ namespace FitnessCenter_Project.Controllers
         //會員檢視
         public ActionResult MemberInterViewDetail(int OrderId=1)
         {
-            ReserveService service = new ReserveService();
-            int[] types = new int[] { 1, 2, 4, 5};
+            
+            int[] types = new int[] { 1, 2, 4, 6};
             if (LoginState)
             {
                 User member = GetMemberInfo();
                 
-                Interview interview = service.SearchInterview(member.MemberId, member.State)
+                Interview interview = ReserveService.Instance.SearchInterview(member.MemberId, member.State)
                     .Where(c => c.OrderId.Equals(OrderId)).FirstOrDefault();
                 var status = ShareService.Instance.GetReserveStatus().Where(c => types.Contains(c.ID)).ToList();
                 InterviewDetail model = new InterviewDetail() {
@@ -160,11 +161,12 @@ namespace FitnessCenter_Project.Controllers
                 return RedirectToAction("Login", "Home");
             
         }
+        //更新面談狀態
         [HttpPost]
         public ActionResult UpdateInterview(UpdateInterview para)
         {
-            ReserveService service = new ReserveService();
-            var result = service.UpdateInterviewOrder(para);
+            
+            var result = ReserveService.Instance.UpdateInterviewOrder(para);
             return Json(new { success = result.ReturnNo == 1 ? true : false, ex = result.Message },
                  JsonRequestBehavior.AllowGet);
 
@@ -175,17 +177,19 @@ namespace FitnessCenter_Project.Controllers
         //教練檢視
         public ActionResult CoachServiceDatail(int OrderId=5)
         {
-            ReserveService service = new ReserveService();
-            int[] status = new int[] { 1, 2, 3,4, 5, 6 };//DB定義的Status ID
+            
+            int[] status = new int[] { 1, 2, 3,4, 6 };//DB定義的Status ID
+            string[] disabled = new string[] { "3","6" };
             if (LoginState)
             {
                 User member = GetMemberInfo();
-                CoachService reserve = service.SearchService(member.MemberId, member.State)
+                CoachService reserve = ReserveService.Instance.SearchService(member.MemberId, member.State)
                     .Where(c => c.OrderId.Equals(OrderId)).FirstOrDefault();
-                var statusList = service.OrderStatusList(reserve.StatusId, status);
+                var statusList = ReserveService.Instance.OrderStatusList(reserve.StatusId, status);
+                statusList.Where(c => c.Value == "3").FirstOrDefault().Disabled = true;
                 var model = new ServiceDetailModel()
                 {
-                    StatusList = new SelectList(statusList, "Value", "Text"),
+                    StatusList = new SelectList(statusList, "Value", "Text",reserve.StatusId, disabled),
                      Service= reserve
 
                 };
@@ -198,13 +202,13 @@ namespace FitnessCenter_Project.Controllers
         //會員檢視
         public ActionResult MemberServiceDetail(int OrderId=5)
         {
-            ReserveService service = new ReserveService();
-            int[] types = new int[] { 1, 2, 3,4, 5,6 };
+            
+            int[] types = new int[] { 1, 2, 3,4,6 };
             if (LoginState)
             {
                 User member = GetMemberInfo();
 
-                CoachService reserve = service.SearchService(member.MemberId, member.State)
+                CoachService reserve = ReserveService.Instance.SearchService(member.MemberId, member.State)
                     .Where(c => c.OrderId.Equals(OrderId)).FirstOrDefault();
                 var status = ShareService.Instance.GetReserveStatus().Where(c => types.Contains(c.ID)).ToList();
                 ServiceDetail model = new ServiceDetail()
@@ -226,8 +230,8 @@ namespace FitnessCenter_Project.Controllers
         [HttpPost]
         public ActionResult UpdateService(UpdateServicePara para)
         {
-            ReserveService service = new ReserveService();
-            var result = service.UpdateServiceOrder(para);
+            
+            var result = ReserveService.Instance.UpdateServiceOrder(para);
             return Json(new { success = result.ReturnNo == 1 ? true : false, ex = result.Message },
                  JsonRequestBehavior.AllowGet);
             

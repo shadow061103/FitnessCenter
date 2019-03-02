@@ -341,7 +341,7 @@
     <Content Include="Views\Member\UpdateMember.cshtml" />
     <Content Include="Views\Coach\UpdateCoach.cshtml" />
     <Content Include="Views\Reserve\ReserveInterveiw.cshtml" />
-    <Content Include="Views\Reserve\ReserveService.cshtml" />
+    <Content Include="Views\Reserve\ReserveClass.cshtml" />
     <Content Include="Views\Reserve\OrderList.cshtml" />
     <Content Include="Views\Reserve\CoachInterViewDetail.cshtml" />
     <Content Include="Views\Reserve\MemberInterViewDetail.cshtml" />

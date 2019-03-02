@@ -172,9 +172,9 @@ ID Int identity(1,1),
 Stauts nvarchar(50)
 PRIMARY KEY( ID )
 )
+drop table ReserveStatus
 
 
-select * from ReserveStatus
 
 --預約面談資料表
 create table ReserveInterView(

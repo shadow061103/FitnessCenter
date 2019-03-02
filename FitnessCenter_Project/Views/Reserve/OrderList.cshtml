@@ -61,7 +61,7 @@
 }
 <div class="container">
     <section id="tabs" class="project-tab">
-
+        
         <div class="row">
             <div class="col-md-12">
                 <nav>
@@ -79,6 +79,7 @@
                                 <thead>
                                     <tr>
                                         <th></th>
+                                        <th>編號</th>
                                         @if ((int)Model.State == 1)
                                         {
                                             <th>學員名字</th>
@@ -104,13 +105,22 @@
                                             @if ((int)Model.State == 1)
                                             {
                                                 <td><a href="@Url.Action("CoachInterViewDetail","Reserve",new { OrderId=interview.OrderId})">檢視</a></td>
+                                                <td>@interview.OrderId</td>
                                                 <td>@interview.MemberName</td>
                                                 <td>@Html.Raw(interview.MemberGenger == 0 ? "男" : "女")</td>
                                                 <td>@interview.MemberAge</td>
                                             }
                                             else
                                             {
-                                                <td><a href="@Url.Action("MemberInterViewDetail","Reserve",new { OrderId=interview.OrderId})">檢視</a></td>
+                                                <td>
+                                            <a href="@Url.Action("MemberInterViewDetail","Reserve",new { OrderId=interview.OrderId})">檢視</a>
+                                             @if (interview.StatusId == 1)
+                                             {
+                                                <a href="#" onclick="CancelInterview(@interview.OrderId)">取消</a>
+                                             }
+                                                
+                                                </td>
+                                                <td>@interview.OrderId</td>
                                                 <td>@interview.CoachName</td>
                                                 <td>@interview.LineID</td>
                                             }
@@ -141,6 +151,7 @@
                             <thead>
                                 <tr>
                                     <th></th>
+                                    <th>編號</th>
                                     @if ((int)Model.State == 1)
                                     {
                                         <th>學員名字</th>
@@ -166,13 +177,21 @@
                                         @if ((int)Model.State == 1)
                                         {
                                             <td><a href="@Url.Action("CoachServiceDatail","Reserve",new { OrderId=service.OrderId})">檢視</a></td>
-                                                <td>@service.MemberName</td>
+                                            <td>@service.OrderId</td>
+                                             <td>@service.MemberName</td>
                                                 <td>@Html.Raw(service.MemberGenger == 0 ? "男" : "女")</td>
                                                 <td>@service.MemberAge</td>
                                         }
                                         else
                                         {
-                                            <td><a href="@Url.Action("MemberServiceDetail","Reserve",new { OrderId=service.OrderId})">檢視</a></td>
+                                            <td>
+                                        <a href="@Url.Action("MemberServiceDetail","Reserve",new { OrderId=service.OrderId})">檢視</a>
+                                            @if (service.StatusId == 1)
+                                            {
+                                                <a href="#" onclick="CancelClass(@service.OrderId)">取消</a>
+                                            }
+                                            </td>
+                                            <td>@service.OrderId</td>
                                                 <td>@service.CoachName</td>
                                                 <td>@service.LineID</td>
                                         }
@@ -211,10 +230,82 @@
 
 
 @section scripts{
-    <script>
+    <script type="text/javascript">
+        function CancelInterview(OrderId)
+        {
+            
+           
+                var formdata = {
+                    OrderId: OrderId,
+                    StatusId: 7, //取消訂單編號
+                };
+                
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateInterview", "Reserve")",
+                    processData: false,
+                    contentType: "application/json;charset=utf-8",
+                    data: JSON.stringify(formdata),
+                    success: function (data) {
+                        console.log(data.success);
+                        if (data.success)
+                        {
+
+                            alert('取消成功');
+                            window.location.reload();
+                        }
+                        else
+                        {
+                            alert(data.ex);
+                       
+                        }
+                    },
+                    error: function (ex) {
+                
+                        alert(ex.Message);
+
+                    }
+                })
 
 
+        
+            
+        }
 
+        function CancelClass(OrderId)
+        {
+            var formdata = {
+                OrderId: OrderId,
+                StatusId: 7, //取消訂單編號
+            };
+                
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateService", "Reserve")",
+                processData: false,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(formdata),
+            success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
+
+                    alert('取消成功');
+                    window.location.reload();
+                }
+                else
+                {
+                    alert(data.ex);
+                       
+                }
+            },
+            error: function (ex) {
+                
+                alert(ex.Message);
+
+            }
+        })
+        }
     </script>
 
 

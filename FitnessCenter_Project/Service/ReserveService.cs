@@ -12,6 +12,9 @@ namespace FitnessCenter_Project.Service
 {
     public class ReserveService
     {
+        private static readonly Lazy<ReserveService> LazyInstance = new Lazy<ReserveService>(() => new ReserveService());
+        private ReserveService() { }
+        public static ReserveService Instance { get { return LazyInstance.Value; } }
 
         #region 面談
         //預約面談
@@ -52,11 +55,11 @@ namespace FitnessCenter_Project.Service
 
         #region 服務
         //預約服務
-        public Result reserveService(ServicePara para)
+        public Result reserveClass(ServicePara para)
         {
 
             var result = new Result();
-            string returnStr = ShareService.Instance.SendApi("Reserve/ReserveSrvice", JsonConvert.SerializeObject(para));
+            string returnStr = ShareService.Instance.SendApi("Reserve/ReserveClass", JsonConvert.SerializeObject(para));
             result = JsonConvert.DeserializeObject<Result>(returnStr);
             return result;
         }

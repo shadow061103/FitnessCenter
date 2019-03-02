@@ -91,13 +91,17 @@ namespace FitnessCenterService.Repository
             var result = new Result();
             var para = new DynamicParameters();
             con.Open();
-            
+            string str = "Update ReserveInterView set StatusId=@StatusId where OrderId=@OrderId";
             para.Add("@OrderId", model.OrderId, DbType.Int32, ParameterDirection.Input, 50);
             para.Add("@StatusId", model.StatusId, DbType.Int32, ParameterDirection.Input, 50);
-
+            if (!string.IsNullOrEmpty(model.Location))
+            {
+                para.Add("@Location", model.Location, DbType.String, ParameterDirection.Input, 20);
+                str = "Update ReserveInterView set StatusId=@StatusId,Location=@Location where OrderId=@OrderId";
+            }
             try
             {
-                con.Execute(@"Update ReserveInterView set StatusId=@StatusId where OrderId=@OrderId",
+                con.Execute(str,
                      para,
                    commandTimeout: 300,
                    commandType: CommandType.Text);
@@ -122,7 +126,7 @@ namespace FitnessCenterService.Repository
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public Result ReserveSrvice(ServicePara model)
+        public Result ReserveClass(ServicePara model)
         {
 
             var result = new Result();
@@ -165,13 +169,19 @@ namespace FitnessCenterService.Repository
             var result = new Result();
             var para = new DynamicParameters();
             con.Open();
-
+            string str = "Update ReserveService set StatusId=@StatusId where OrderId=@OrderId";
             para.Add("@OrderId", model.OrderId, DbType.Int32, ParameterDirection.Input, 50);
             para.Add("@StatusId", model.StatusId, DbType.Int32, ParameterDirection.Input, 50);
 
+
+            if (!string.IsNullOrEmpty(model.Location))
+            {
+                para.Add("@Location", model.Location, DbType.String, ParameterDirection.Input, 20);
+                str = "Update ReserveService set StatusId=@StatusId,Location=@Location where OrderId=@OrderId";
+            }
             try
             {
-                con.Execute(@"Update ReserveService set StatusId=@StatusId where OrderId=@OrderId",
+                con.Execute(str,
                      para,
                    commandTimeout: 300,
                    commandType: CommandType.Text);
@@ -213,9 +223,9 @@ namespace FitnessCenterService.Repository
                 else
                 {
                     para.Add("@CoachId", MemberId, DbType.String, ParameterDirection.Input, size: 50);
-                    str += " and CoachId=@CoachId";
+                    str += " and CoachId=@CoachId and  StatusId <> 7";
                 }
-
+                str += " order by StatusId asc";
                 list = con.Query<Interview>(str, para, commandTimeout: 300, commandType: CommandType.Text).ToList();
 
             }
@@ -247,9 +257,9 @@ namespace FitnessCenterService.Repository
                 else
                 {
                     para.Add("@CoachId", MemberId, DbType.String, ParameterDirection.Input, size: 50);
-                    str += " and CoachId=@CoachId";
+                    str += " and CoachId=@CoachId and  StatusId <> 7";
                 }
-
+                str += " order by StatusId asc";
                 list = con.Query<CoachService>(str, para, commandTimeout: 300, commandType: CommandType.Text).ToList();
 
             }

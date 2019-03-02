@@ -129,7 +129,7 @@
             var formdata = new FormData($('#form1').get(0));
             $.ajax({
                 type: "POST",
-                url: "@Url.Action("ReserveService", "Reserve")",
+                url: "@Url.Action("ReserveClass", "Reserve")",
                 processData: false,
             contentType: false,
             data:formdata,

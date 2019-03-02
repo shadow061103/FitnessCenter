@@ -12,7 +12,7 @@ namespace FitnessCenterService.Interface
     {
         List<ReserveStatus> GetOrderStatus();
         Result ReserveInterview(InteriewPara model);
-        Result ReserveSrvice(ServicePara model);
+        Result ReserveClass(ServicePara model);
         List<Interview> InterViewList(string MemberId, int Type);
         List<CoachService> ServiceList(string MemberId, int Type);
         Result UpdateInterviewOrder(UpdateInterview model);

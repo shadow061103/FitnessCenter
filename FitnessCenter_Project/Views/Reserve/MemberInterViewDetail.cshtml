@@ -18,7 +18,7 @@
     </style>
 }
 <div class="container">
-    <form action="@Url.Action("MemberInterViewDetail","Reserve")" method="post">
+    <form action="@Url.Action("MemberInterViewDetail", "Reserve")" method="post">
         
         
         <div class="row">
@@ -47,7 +47,7 @@
             </div>
             <div class="col-sm-6">
                 
-                    @if (Model.interview.Status == "教練拒絕")
+                    @if (Model.interview.StatusId == 6 || Model.interview.StatusId==7)//被拒絕或取消
                     {
                     <label>@Model.interview.Status</label>
                     }
@@ -57,13 +57,13 @@
                             @{ 
                                 var status = Model.Status.Where(c => c.ID == Model.interview.StatusId).FirstOrDefault();
                                 int index = Model.Status.IndexOf(status);
-                                string progress = Convert.ToString((100 / 4) * (index+1));
+                                string progress = Convert.ToString((100 / (Model.Status.Count()-1)) * (index+1));
                             }
 
                             <div class="progress-bar" role="progressbar" style="width: @progress%;" aria-valuenow="@progress" aria-valuemin="0" aria-valuemax="100">@Model.interview.Status</div>
                         </div>
                     }
-                            
+                @Html.HiddenFor(c => c.interview.StatusId)
                        
 
 
@@ -115,13 +115,17 @@
             <div class="col-sm-6">
 
                 <span>
-                   @Model.interview.Location
+                    @Html.TextBoxFor(c=>c.interview.Location,new { @class="form-control"})
+                   
                 </span>
             </div>
         </div>
         <div class="row form-group">
             <div class="offset-sm-4 col-sm-6">
-                
+                @if (Model.interview.StatusId == 1)
+                {
+                    <button type="button" class="btn btn-outline-secondary btn-lg" onclick="Update()">送出</button>
+                }
                 <button type="button" class="btn btn-outline-secondary btn-lg" onclick="Back()">回上頁</button>
             </div>
 
@@ -133,7 +137,44 @@
 @section scripts{
     <script type="text/javascript">
         
+        function Update() {
+            var formdata = {
+                OrderId: @Model.interview.OrderId,
+                StatusId:@Model.interview.StatusId,
+                Location: $("#interview_Location").val()
+            };
+            console.log("Update" + JSON.stringify(formdata));
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("UpdateInterview", "Reserve")",
+                processData: false,
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify(formdata),
+            success: function (data) {
+                console.log(data.success);
+                if (data.success)
+                {
 
+                    alert('修改成功');
+                    window.location.href = "@Url.Action("OrderList","Reserve")";
+                }
+                else
+                {
+                    
+                    $('#errorMsg').text(data.ex);
+                    $('#error').show();
+                }
+            },
+            error: function (ex) {
+                
+                alert(ex.Message);
+
+            }
+
+        });
+
+
+        }
         
         function Back()
         {

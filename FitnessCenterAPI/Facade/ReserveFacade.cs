@@ -27,9 +27,9 @@ namespace FitnessCenterAPI.Facade
         {
             return repository.UpdateInterviewOrder(model);
         }
-        public Result ReserveSrvice(ServicePara model)
+        public Result ReserveClass(ServicePara model)
         {
-            return repository.ReserveSrvice(model);
+            return repository.ReserveClass(model);
         }
         public Result UpdateServiceOrder(UpdateServicePara model)
         {

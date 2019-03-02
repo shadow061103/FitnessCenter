@@ -84,3 +84,4 @@ D:\VisualStudio開發專案\FitnessCenter\FitnessCenterModel\bin\Debug\zh-Hant\S
 D:\VisualStudio開發專案\FitnessCenter\FitnessCenterModel\bin\Debug\zh-Hant\System.Web.WebPages.Razor.resources.dll
 D:\VisualStudio開發專案\FitnessCenter\FitnessCenterModel\obj\Debug\FitnessCenterModel.dll
 D:\VisualStudio開發專案\FitnessCenter\FitnessCenterModel\obj\Debug\FitnessCenterModel.pdb
+D:\VisualStudio開發專案\FitnessCenter\FitnessCenterModel\obj\Debug\FitnessCenterModel.csprojResolveAssemblyReference.cache

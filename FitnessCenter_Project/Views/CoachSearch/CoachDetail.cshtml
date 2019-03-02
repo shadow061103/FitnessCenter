@@ -245,7 +245,7 @@
 
         });
         $("#service").click(function(){
-            window.location.href="@Html.Raw(Url.Action("ReserveService", "Reserve", new
+            window.location.href="@Html.Raw(Url.Action("ReserveClass", "Reserve", new
             {
                 CoachId = Model.coach.MemberId,
                 CoachName = $"{Model.coach.Name}({Model.coach.NickName})"
@@ -257,6 +257,6 @@
 
 
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=yourkey&callback=initMap">
 </script>
 }

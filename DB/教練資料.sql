@@ -44,9 +44,11 @@ select GETDATE() as [Today],DATEDIFF(YY,'1993-04-23',GETDATE()) as [Age]
 
 
 select * from ViewInterView
+
 select * from ViewServie¡@
-where MemberId='6607b2be060b4033931c80df0edf8e16'
+
 
 
 select * from ReserveStatus
+
 

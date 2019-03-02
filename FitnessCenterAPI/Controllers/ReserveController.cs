@@ -26,9 +26,9 @@ namespace FitnessCenterAPI.Controllers
             return facade.UpdateInterviewOrder(model);
         }
         [HttpPost]
-        public Result ReserveSrvice(ServicePara model)
+        public Result ReserveClass(ServicePara model)
         {
-            return facade.ReserveSrvice(model);
+            return facade.ReserveClass(model);
         }
         [HttpPost]
         public Result UpdateServiceOrder(UpdateServicePara model)

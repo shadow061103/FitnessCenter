@@ -14,8 +14,8 @@
     </style>
     }
 <div class="container">
-    <form action="@Url.Action("CoachInterViewDetail","Reserve")" method="post">
-        @Html.HiddenFor(c=>c.interview.OrderId)
+    <form action="@Url.Action("CoachInterViewDetail", "Reserve")" method="post">
+        @Html.HiddenFor(c => c.interview.OrderId)
         <div id="error" class="alert alert-danger alert-dismissible fade show" role="alert">
 
             <p id="errorMsg"></p>
@@ -48,7 +48,11 @@
                 <label>預約狀態</label>
             </div>
             <div class="col-sm-6">
-                @Html.DropDownListFor(c=>c.interview.StatusId,Model.StatusList,new { @class= "form-control" })
+                <label>
+                    
+
+                </label>
+                @Html.DropDownListFor(c => c.interview.StatusId, Model.StatusList, new { @class = "form-control" })
                
             </div>
         </div>
@@ -108,13 +112,23 @@
             <div class="col-sm-6">
 
                 <span>
-                    @Model.interview.Location
+                    @Html.TextBoxFor(c=>c.interview.Location,new { @class="form-control"})
+                    
                 </span>
             </div>
         </div>
         <div class="row form-group">
             <div class="offset-sm-4 col-sm-6">
-                <button type="button" class="btn btn-outline-primary btn-lg" onclick="Update()">送出</button>
+                @if (Model.interview.StatusId < 4) //填單或確認狀態才能修改
+                {
+                    <button type="button" class="btn btn-outline-primary btn-lg" onclick="Update($('#interview_StatusId').val())">送出</button>
+                }
+                
+                @if (Model.interview.StatusId ==1) //沒確認前才能拒絕
+                {
+                    <button type="button" class="btn btn-outline-primary btn-lg" onclick="Update(6)">拒絕</button>
+                }
+                
                 <button type="button" class="btn btn-outline-secondary btn-lg" onclick="Back()">回上頁</button>
             </div>
 
@@ -125,14 +139,15 @@
 </div>
 @section scripts{
     <script type="text/javascript">
-        function Update()
+        function Update(StatusId)
         {
 
             var formdata = {
                 OrderId: $("#interview_OrderId").val(),
-                StatusId: $("#interview_StatusId").val(),
+                StatusId: StatusId,
+                Location: $("#interview_Location").val()
             };
-            console.log("Update"+JSON.stringify(formdata));
+            console.log("Update" + JSON.stringify(formdata));
             $.ajax({
                 type: "POST",
                 url: "@Url.Action("UpdateInterview", "Reserve")",
@@ -145,11 +160,11 @@
                 {
 
                     alert('修改成功');
-                    
+                    window.location.href = "@Url.Action("OrderList","Reserve")";
                 }
                 else
                 {
-                    //alert('註冊失敗' + data.ex);
+                    
                     $('#errorMsg').text(data.ex);
                     $('#error').show();
                 }
