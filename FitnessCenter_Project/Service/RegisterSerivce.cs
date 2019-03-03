@@ -56,7 +56,7 @@ namespace FitnessCenter_Project.Service
                 if (model.Image!=null && model.Image.ContentLength>0)
                 {
                     //存到資料夾
-                    var FileName = result.MemberId + DateTime.Now.ToString("yyyyMMdd");
+                    var FileName = result.MemberId + DateTime.Now.ToString("yyyyMMdd")+".jpg";
                     var FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/MemberImage/"), FileName);
                     model.Image.SaveAs(FilePath);
                     
@@ -117,7 +117,7 @@ namespace FitnessCenter_Project.Service
                 {
 
                     //存到資料夾
-                    var FileName = result.MemberId + DateTime.Now.ToString("yyyyMMdd");
+                    var FileName = result.MemberId + DateTime.Now.ToString("yyyyMMdd") + ".jpg"; ;
                     var FilePath = Path.Combine(HttpContext.Current.Server.MapPath("~/CoachImage/"), FileName);
                     model.Image.SaveAs(FilePath);
                     

@@ -86,7 +86,7 @@ namespace FitnessCenter_Project.Service
             }
             MapAddressData result = new MapAddressData();
             Address = Address.Replace("|", ""); //資料庫取出來的先做轉換
-            string para = $"address={Address}&key=yourkey";
+            string para = $"address={Address}&key=key";
             string url = "https://maps.googleapis.com/maps/api/geocode/json?" + para;
 
             HttpClient client = new HttpClient();

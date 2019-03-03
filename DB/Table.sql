@@ -191,7 +191,8 @@ FOREIGN KEY (CoachId) REFERENCES Coach(MemberId),
 FOREIGN KEY (StatusId) REFERENCES ReserveStatus(ID)
 )
 
-
+select * from ReserveInterView
+delete ReserveInterView where OrderId=7
 
 select * from ReserveService
 Update ReserveService set ServiceDate='2019-06-16 ¢°¢µ:00:00.000' where OrderId=5

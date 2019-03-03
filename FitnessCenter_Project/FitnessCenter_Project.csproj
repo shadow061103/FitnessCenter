@@ -291,6 +291,8 @@
     <Content Include="Content\bootstrap-reboot.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="CoachImage\0454500e54b94aba87f283aa2d73dff820190303.jpg" />
+    <Content Include="MemberImage\1dd625c0725146d4b829c2a4493f95e320190303.jpg" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
