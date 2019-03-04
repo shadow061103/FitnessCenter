@@ -197,7 +197,7 @@ delete ReserveInterView where OrderId=7
 select * from ReserveService
 Update ReserveService set ServiceDate='2019-06-16 １６:00:00.000' where OrderId=5
 
---ALTER TABLE ReserveService ALTER COLUMN ServiceDate datetime;
+ALTER TABLE ReserveInterView ALTER COLUMN ReserveDate datetime;
 
 --預約服務資料表
 create table ReserveService(
@@ -219,6 +219,7 @@ FOREIGN KEY (TrainingProgramId) REFERENCES TrainingProgram(ID),
 FOREIGN KEY (CourseId) REFERENCES Course(ID)
 
 )
+
 update ReserveService set Charge=1200
 
 --預約面談檢視表
